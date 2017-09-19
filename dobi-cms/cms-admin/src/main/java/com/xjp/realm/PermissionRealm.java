@@ -67,7 +67,7 @@ public class PermissionRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String username = (String) token.getPrincipal();
         String password = new String((char[])token.getCredentials());
-//        logger.info(this.getClass().getName() + "--获取认证的用户名：" + username + " 密码：" + password);
+        logger.info(this.getClass().getName() + "--获取认证的用户名：" + username + " 密码：" + password);
 //        User user = userService.getUser(username, password);
 //        if (user == null) {
 //            throw new AccountException("账号或密码不正确");

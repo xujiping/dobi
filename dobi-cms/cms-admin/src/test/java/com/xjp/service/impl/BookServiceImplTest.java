@@ -23,10 +23,14 @@ public class BookServiceImplTest {
   @Autowired
   private BookService bookService;
 
+  @Autowired
+  private BookMapper bookMapper;
+
   @Test
   public void testSelect() {
     bookService.initMapper();
-    Book book = bookService.selectByPrimaryKey(new Long(1));
+    Book book1 = new Book();
+    int book = bookService.selectCount(book1);
     System.out.println("书籍：" + book);
   }
 
