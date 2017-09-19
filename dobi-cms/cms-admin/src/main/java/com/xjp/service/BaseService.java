@@ -15,15 +15,6 @@ public interface BaseService<Record, Example> {
 
   List<Record> selectAll();
 
-  Record selectOne(Record record);
-
-  /**
-   * 会报NoSuchMethodException，原因不明.
-   * @param record model
-   * @return int
-   */
-  int selectCount(Record record);
-
   int insert(Record record);
 
   int insertSelective(Record record);

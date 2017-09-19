@@ -42,46 +42,10 @@ public abstract class BaseServiceImpl<Mapper, Record, Example>
   }
 
   @Override
-  public Record selectOne(Record record) {
-    try {
-      DynamicDataSource.setDataSource(DataSourceEnum.SLAVE.getName());
-      Method countByRecord = mapper.getClass().getDeclaredMethod("selectOne", record.getClass());
-      Record result = (Record) countByRecord.invoke(mapper, record);
-      return result;
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
-      e.printStackTrace();
-    } catch (NoSuchMethodException e) {
-      e.printStackTrace();
-    }
-    DynamicDataSource.clearDataSource();
-    return null;
-  }
-
-  @Override
   public int delete(Record record) {
     try {
       DynamicDataSource.setDataSource(DataSourceEnum.SLAVE.getName());
       Method countByRecord = mapper.getClass().getDeclaredMethod("delete", record.getClass());
-      Object result = countByRecord.invoke(mapper, record);
-      return Integer.parseInt(String.valueOf(result));
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
-      e.printStackTrace();
-    } catch (NoSuchMethodException e) {
-      e.printStackTrace();
-    }
-    DynamicDataSource.clearDataSource();
-    return 0;
-  }
-
-  @Override
-  public int selectCount(Record record) {
-    try {
-      DynamicDataSource.setDataSource(DataSourceEnum.SLAVE.getName());
-      Method countByRecord = mapper.getClass().getDeclaredMethod("selectCount", record.getClass());
       Object result = countByRecord.invoke(mapper, record);
       return Integer.parseInt(String.valueOf(result));
     } catch (IllegalAccessException e) {
