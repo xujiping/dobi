@@ -229,4 +229,11 @@ public class Book {
     public void setType(Integer type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+      return "Book [id=" + id + ", name=" + name + ", author=" + author + ", pubdate=" + pubdate + ", size=" + size
+          + ", url=" + url + ", cover=" + cover + ", intro=" + intro + ", amazon=" + amazon + ", type=" + type + "]";
+    }
+    
 }
