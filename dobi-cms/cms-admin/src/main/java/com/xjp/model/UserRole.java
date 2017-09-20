@@ -4,53 +4,76 @@ import javax.persistence.*;
 
 @Table(name = "user_role")
 public class UserRole {
+    /**
+     * 编号
+     */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private Integer rid;
-
-    private Long uid;
+    @Column(name = "user_role_id")
+    private Integer userRoleId;
 
     /**
-     * @return id
+     * 用户编号
      */
-    public Long getId() {
-        return id;
+    @Column(name = "user_id")
+    private Integer userId;
+
+    /**
+     * 角色编号
+     */
+    @Column(name = "role_id")
+    private Integer roleId;
+
+    /**
+     * 获取编号
+     *
+     * @return user_role_id - 编号
+     */
+    public Integer getUserRoleId() {
+        return userRoleId;
     }
 
     /**
-     * @param id
+     * 设置编号
+     *
+     * @param userRoleId 编号
      */
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserRoleId(Integer userRoleId) {
+        this.userRoleId = userRoleId;
     }
 
     /**
-     * @return rid
+     * 获取用户编号
+     *
+     * @return user_id - 用户编号
      */
-    public Integer getRid() {
-        return rid;
+    public Integer getUserId() {
+        return userId;
     }
 
     /**
-     * @param rid
+     * 设置用户编号
+     *
+     * @param userId 用户编号
      */
-    public void setRid(Integer rid) {
-        this.rid = rid;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     /**
-     * @return uid
+     * 获取角色编号
+     *
+     * @return role_id - 角色编号
      */
-    public Long getUid() {
-        return uid;
+    public Integer getRoleId() {
+        return roleId;
     }
 
     /**
-     * @param uid
+     * 设置角色编号
+     *
+     * @param roleId 角色编号
      */
-    public void setUid(Long uid) {
-        this.uid = uid;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 }

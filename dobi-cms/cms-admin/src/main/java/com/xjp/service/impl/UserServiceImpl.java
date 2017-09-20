@@ -1,6 +1,7 @@
 package com.xjp.service.impl;
 
 import com.xjp.annotation.BaseService;
+import com.xjp.common.service.BaseServiceImpl;
 import com.xjp.dao.UserMapper;
 import com.xjp.model.User;
 import com.xjp.service.Userservice;
@@ -27,4 +28,5 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User, User> imp
 
   @Autowired
   UserMapper userMapper;
+
 }

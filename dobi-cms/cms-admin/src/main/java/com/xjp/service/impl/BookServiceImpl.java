@@ -1,5 +1,6 @@
 package com.xjp.service.impl;
 
+import com.xjp.common.service.BaseServiceImpl;
 import com.xjp.dao.BookMapper;
 import com.xjp.model.Book;
 import com.xjp.model.BookExample;

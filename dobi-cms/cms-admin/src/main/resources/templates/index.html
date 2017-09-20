@@ -7,14 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>后台管理系统</title>
 
-    <link href="/static/plugins/fullPage/jquery.fullPage.css" rel="stylesheet"/>
-    <link href="/static/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="/static/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
+    <link th:href="@{/plugins/fullPage/jquery.fullPage.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/bootstrap-3.3.0/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css}"
           rel="stylesheet"/>
-    <link href="/static/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
-    <link href="/static/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
+    <link th:href="@{/plugins/waves-0.7.5/waves.min.css}" rel="stylesheet"/>
+    <link th:href="@{/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css}"
           rel="stylesheet"/>
-    <link href="/static/css/admin.css" rel="stylesheet"/>
+    <link th:href="@{/css/admin.css}" rel="stylesheet"/>
     <style>
         /** skins **/
         #zheng-upms-server #header {
@@ -208,7 +208,7 @@
                     <img src="images/avatar.jpg"/>
                 </div>
                 <div class="sp-info">
-                    张恕征，您好！
+                    管理员，您好！
                     <i class="zmdi zmdi-caret-down"></i>
                 </div>
             </a>
@@ -366,16 +366,16 @@
 </section>
 <footer id="footer"></footer>
 
-<script src="/static/plugins/jquery.1.12.4.min.js"></script>
-<script src="/static/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
-<script src="/static/plugins/waves-0.7.5/waves.min.js"></script>
-<script src="/static/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="/static/plugins/BootstrapMenu.min.js"></script>
-<script src="/static/plugins/device.min.js"></script>
-<script src="/static/plugins/fullPage/jquery.fullPage.min.js"></script>
-<script src="/static/plugins/fullPage/jquery.jdirk.min.js"></script>
-<script src="/static/plugins/jquery.cookie.js"></script>
+<script th:src="@{/plugins/jquery.1.12.4.min.js}"></script>
+<script th:src="@{/plugins/bootstrap-3.3.0/js/bootstrap.min.js}"></script>
+<script th:src="@{/plugins/waves-0.7.5/waves.min.js}"></script>
+<script th:src="@{/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js}"></script>
+<script th:src="@{/plugins/BootstrapMenu.min.js}"></script>
+<script th:src="@{/plugins/device.min.js}"></script>
+<script th:src="@{/plugins/fullPage/jquery.fullPage.min.js}"></script>
+<script th:src="@{/plugins/fullPage/jquery.jdirk.min.js}"></script>
+<script th:src="@{/plugins/jquery.cookie.js}"></script>
 
-<script src="/static/js/admin.js"></script>
+<script th:src="@{/js/admin.js}"></script>
 </body>
 </html>

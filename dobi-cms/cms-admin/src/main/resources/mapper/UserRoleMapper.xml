@@ -5,8 +5,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="rid" jdbcType="INTEGER" property="rid" />
-    <result column="uid" jdbcType="BIGINT" property="uid" />
+    <id column="user_role_id" jdbcType="INTEGER" property="userRoleId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
   </resultMap>
 </mapper>

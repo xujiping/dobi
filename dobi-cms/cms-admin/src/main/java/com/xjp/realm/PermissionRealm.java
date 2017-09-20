@@ -1,15 +1,23 @@
 package com.xjp.realm;
 
-//import com.xjp.model.Role;
-//import com.xjp.model.User;
-//import com.xjp.service.UserService;
-
 import com.xjp.dao.UserMapper;
+import com.xjp.model.Role;
 import com.xjp.model.User;
-import com.xjp.service.Userservice;
+import com.xjp.service.RoleService;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.annotation.Resource;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AccountException;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -18,12 +26,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * 自定义权限认证
@@ -34,27 +38,43 @@ public class PermissionRealm extends AuthorizingRealm {
 
   private Logger logger = LoggerFactory.getLogger(getClass());
 
-  @Autowired
   private UserMapper userMapper;
 
+  private RoleService roleService;
+
+  @SuppressWarnings("SpringJavaAutowiringInspection")
+  @Resource
+  public void setUserMapper(UserMapper userMapper) {
+    this.userMapper = userMapper;
+  }
+
+  @SuppressWarnings("SpringJavaAutowiringInspection")
+  @Resource
+  public void setRoleService(RoleService roleService) {
+    this.roleService = roleService;
+  }
+
   /**
-   * 权限认证
+   * 权限认证.
    */
   @Override
   protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-    String username = (String) principals.getPrimaryPrincipal();
-//        User user = userService.getUser(username);
-    Set<String> permissions = new HashSet<>();
-    //用户所属角色
-//        Set<String> roles = new HashSet<>();
-//        List<Role> roleList = userService.getUserRoles(user);
-//        logger.info(this.getClass().getName() + "--用户所有角色：" + roleList);
-//        for (Role role : roleList) {
-//            roles.add(role.getName());
-//        }
     SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-//        info.setStringPermissions(roles);//添加角色集合
+    String username = (String) principals.getPrimaryPrincipal();
+    User record = new User();
+    record.setUsername(username);
+    User user = userMapper.selectOne(record);
+    Set<String> permissions = new HashSet<>();
+    // TODO 用户权限实现
     info.setStringPermissions(permissions);  //添加权限集合
+    //用户所属角色
+    Set<String> roles = new HashSet<>();
+    List<Role> roleList = roleService.selectUserRoles(user);
+    logger.info(this.getClass().getName() + "--用户所有角色：" + roleList);
+    for (Role role : roleList) {
+      roles.add(role.getName());
+    }
+    info.setStringPermissions(roles);//添加角色集合
     return info;
   }
 

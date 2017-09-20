@@ -1,5 +1,6 @@
 package com.xjp.service;
 
+import com.xjp.common.service.BaseService;
 import com.xjp.model.Book;
 import com.xjp.model.BookExample;
 
