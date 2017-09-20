@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="zh-cn">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>新增角色</title>
+    <head th:include="/inc/common :: head"></head>
+</head>
+<body>
+<div id="main">
+    <div id="createDialog" class="crudDialog">
+        <form id="createForm" method="post">
+            <input type="hidden" name="userId" value="1"/>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <label for="title">角色名</label>
+                            <input id="title" type="text" class="form-control" name="title"
+                                   maxlength="200"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <label for="description">中文名</label>
+                            <input id="description" type="text" class="form-control"
+                                   name="description" maxlength="500"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <label for="author">描述</label>
+                            <input id="author" type="text" class="form-control" name="author"
+                                   maxlength="20"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group text-right dialog-buttons">
+                    <a class="waves-effect waves-button" href="javascript:;"
+                       onclick="createSubmit();">保存</a>
+                    <a class="waves-effect waves-button" href="javascript:;"
+                       onclick="createDialog.close();">取消</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        function createSubmit() {
+            $.ajax({
+                       type: 'post',
+                       url: '${basePath}/manage/article/create',
+                       data: $('#createForm').serialize(),
+                       beforeSend: function () {
+                           if ($('#title').val() == '') {
+                               $('#title').focus();
+                               return false;
+                           }
+                       },
+                       success: function (result) {
+                           if (result.code != 1) {
+                               if (result.data instanceof Array) {
+                                   $.each(result.data, function (index, value) {
+                                       $.confirm({
+                                                     theme: 'dark',
+                                                     animation: 'rotateX',
+                                                     closeAnimation: 'rotateX',
+                                                     title: false,
+                                                     content: value.errorMsg,
+                                                     buttons: {
+                                                         confirm: {
+                                                             text: '确认',
+                                                             btnClass: 'waves-effect waves-button waves-light'
+                                                         }
+                                                     }
+                                                 });
+                                   });
+                               } else {
+                                   $.confirm({
+                                                 theme: 'dark',
+                                                 animation: 'rotateX',
+                                                 closeAnimation: 'rotateX',
+                                                 title: false,
+                                                 content: result.data.errorMsg,
+                                                 buttons: {
+                                                     confirm: {
+                                                         text: '确认',
+                                                         btnClass: 'waves-effect waves-button waves-light'
+                                                     }
+                                                 }
+                                             });
+                               }
+                           } else {
+                               createDialog.close();
+                               $table.bootstrapTable('refresh');
+                           }
+                       },
+                       error: function (XMLHttpRequest, textStatus, errorThrown) {
+                           $.confirm({
+                                         theme: 'dark',
+                                         animation: 'rotateX',
+                                         closeAnimation: 'rotateX',
+                                         title: false,
+                                         content: textStatus,
+                                         buttons: {
+                                             confirm: {
+                                                 text: '确认',
+                                                 btnClass: 'waves-effect waves-button waves-light'
+                                             }
+                                         }
+                                     });
+                       }
+                   });
+        }
+    </script>
+</div>
+</body>
+<div th:include="/inc/common :: footer"></div>
+</html>

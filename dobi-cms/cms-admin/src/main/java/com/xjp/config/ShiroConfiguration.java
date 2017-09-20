@@ -39,7 +39,6 @@ public class ShiroConfiguration {
     filterChainDefinitionMap.put("/css/**", "anon");
     filterChainDefinitionMap.put("/js/**", "anon");
     filterChainDefinitionMap.put("/login/ajaxLogin", "anon");
-    filterChainDefinitionMap.put("/index", "anon");
     filterChainDefinitionMap.put("/plugins/**", "anon");
     //配置退出过滤器，具体代码Shiro已经是实现
     filterChainDefinitionMap.put("/logout", "logout");

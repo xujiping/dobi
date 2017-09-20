@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="zh-cn">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>角色列表</title>
+    <head th:include="/inc/common :: head"></head>
+</head>
+<body>
+<div id="main">
+    <div id="toolbar">
+        <a class="waves-effect waves-button" href="javascript:;" onclick="createAction()"><i
+                class="zmdi zmdi-plus"></i> 新增角色</a>
+        <a class="waves-effect waves-button" href="javascript:;" onclick="updateAction()"><i
+                class="zmdi zmdi-edit"></i> 编辑角色</a>
+        <a class="waves-effect waves-button" href="javascript:;" onclick="deleteAction()"><i
+                class="zmdi zmdi-close"></i> 删除角色</a>
+        <a class="waves-effect waves-button" href="javascript:;" onclick="permissionAction()"><i
+                class="zmdi zmdi-key"></i> 角色权限</a>
+    </div>
+    <table id="table"></table>
+</div>
+</body>
+<div th:include="/inc/common :: footer"></div>
+<script>
+    var $table = $('#table');
+    $(function () {
+        // bootstrap table初始化
+        $table.bootstrapTable
+        ({
+             url: '/manage/role/list',
+             height: getHeight(),
+             striped: true,
+             search: true,
+             showRefresh: true,
+             showColumns: true,
+             minimumCountColumns: 2,
+             clickToSelect: true,
+             detailView: true,
+             detailFormatter: 'detailFormatter',
+             pagination: true,
+             paginationLoop: false,
+             sidePagination: 'server',
+             silentSort: false,
+             smartDisplay: false,
+             escape: true,
+             searchOnEnterKey: true,
+             idField: 'roleId',
+             maintainSelected: true,
+             toolbar: '#toolbar',
+             columns: [
+                 {field: 'ck', checkbox: true},
+                 {
+                     field: 'roleId',
+                     title: '编号',
+                     sortable: true,
+                     align: 'center'
+                 },
+                 {field: 'name', title: '角色名称'},
+                 {field: 'title', title: '角色标题'},
+                 {field: 'description', title: '角色描述'},
+                 {
+                     field: 'action',
+                     title: '操作',
+                     align: 'center',
+                     formatter: 'actionFormatter',
+                     events: 'actionEvents',
+                     clickToSelect: false
+                 }
+             ]
+         });
+    });
+
+    // 新增
+    var createDialog;
+    function createAction() {
+        createDialog = $.dialog
+        ({
+             animationSpeed: 300,
+             title: '新增角色',
+             columnClass: 'xlarge',
+             content: 'url:/manage/role/add',
+             onContentReady: function () {
+                 initMaterialInput();
+                 $('select').select2();
+             }
+         });
+    }
+</script>
+</html>

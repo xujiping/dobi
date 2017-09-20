@@ -4,6 +4,7 @@ import com.xjp.dao.UserMapper;
 import com.xjp.model.Role;
 import com.xjp.model.User;
 import com.xjp.service.RoleService;
+import com.xjp.util.MD5Util;
 
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +17,7 @@ import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -89,16 +91,17 @@ public class PermissionRealm extends AuthorizingRealm {
     logger.info(this.getClass().getName() + "--获取认证的用户名：" + username + " 密码：" + password);
     User instance = new User();
     instance.setUsername(username);
-    instance.setPassword(password);
     User user = userMapper.selectOne(instance);
     if (user == null) {
-      throw new AccountException("账号或密码不正确");
-    } else {
-      //登录成功
-      Subject subject = SecurityUtils.getSubject();
-      Session session = subject.getSession();
-      session.setAttribute("user", user);
+      throw new AccountException("该账号不存在");
     }
+    if (!user.getPassword().equals(MD5Util.MD5(password + user.getSalt()))) {
+      throw new IncorrectCredentialsException("账号或密码不正确");
+    }
+    //登录成功
+    Subject subject = SecurityUtils.getSubject();
+    Session session = subject.getSession();
+    session.setAttribute("user", user);
     return new SimpleAuthenticationInfo(username, password, getName());
   }
 
