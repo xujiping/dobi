@@ -1,4 +1,4 @@
-package com.xjp.common;
+package com.xjp.common.constants;
 
 /**
  * 通用静态常量定义类.

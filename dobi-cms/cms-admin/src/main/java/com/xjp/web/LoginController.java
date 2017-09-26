@@ -1,6 +1,6 @@
 package com.xjp.web;
 
-import com.xjp.common.Constants;
+import com.xjp.common.constants.Constants;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

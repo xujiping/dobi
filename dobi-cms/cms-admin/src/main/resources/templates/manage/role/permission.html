@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="zh-cn">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>角色权限</title>
+    <head th:include="/inc/common :: head"></head>
+</head>
+<body>
+<div id="permissionDialog" class="crudDialog">
+    <form id="permissionForm" method="post">
+        <div class="form-group">
+            <ul id="ztree" class="ztree"></ul>
+        </div>
+        <div class="form-group text-right dialog-buttons">
+            <a class="waves-effect waves-button" href="javascript:;" onclick="permissionSubmit();">保存</a>
+            <a class="waves-effect waves-button" href="javascript:;"
+               onclick="permissionDialog.close();">取消</a>
+        </div>
+    </form>
+</div>
+<div th:include="/inc/common :: footer"></div>
+<script type="text/javascript">
+    //下面这行注释一定要有，不然js中大于、小于、符号会报错
+    //<![CDATA[
+    var zTreeObj;
+    var changeDatas = [];
+    //zTree的参数配置
+    var setting = {
+        check: {
+            enable: true,
+            // 勾选关联父，取消关联子
+            chkboxType: {"Y": "ps", "N": "ps"}
+        },
+        async: {
+            enable: true,
+            url: '/manage/permission/role/' + roleId,
+            autoParam:["pid"]
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: 'permission_id',
+                pIdKey: 'pid',
+                rootPid: '0'
+            }
+        },
+        callback: {
+            onCheck: zTreeOnCheck
+        }
+    };
+
+    function zTreeOnCheck(event, treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj("ztree");
+        var changeNodes = zTree.getChangeCheckedNodes();
+        changeDatas = [];
+        for (var i = 0; i < changeNodes.length; i++) {
+            var changeData = {};
+            changeData.permission_id = changeNodes[i].permission_id;
+            changeData.checked = changeNodes[i].checked;
+            changeDatas.push(changeData);
+        }
+    }
+
+    function permissionSubmit() {
+        $.ajax({
+                   type: 'post',
+                   url: '/manage/role/permission/' + roleId,
+                   data: {datas: JSON.stringify(changeDatas), roleId: roleId},
+                   success: function (result) {
+                       if (result.code != 1) {
+                           if (result.data instanceof Array) {
+                               $.each(result.data, function (index, value) {
+                                   $.confirm({
+                                                 theme: 'dark',
+                                                 animation: 'rotateX',
+                                                 closeAnimation: 'rotateX',
+                                                 title: false,
+                                                 content: value.errorMsg,
+                                                 buttons: {
+                                                     confirm: {
+                                                         text: '确认',
+                                                         btnClass: 'waves-effect waves-button waves-light'
+                                                     }
+                                                 }
+                                             });
+                               });
+                           } else {
+                               $.confirm({
+                                             theme: 'dark',
+                                             animation: 'rotateX',
+                                             closeAnimation: 'rotateX',
+                                             title: false,
+                                             content: result.data.errorMsg,
+                                             buttons: {
+                                                 confirm: {
+                                                     text: '确认',
+                                                     btnClass: 'waves-effect waves-button waves-light'
+                                                 }
+                                             }
+                                         });
+                           }
+                       } else {
+                           permissionDialog.close();
+                           $table.bootstrapTable('refresh');
+                       }
+                   },
+                   error: function (XMLHttpRequest, textStatus, errorThrown) {
+                       $.confirm({
+                                     theme: 'dark',
+                                     animation: 'rotateX',
+                                     closeAnimation: 'rotateX',
+                                     title: false,
+                                     content: textStatus,
+                                     buttons: {
+                                         confirm: {
+                                             text: '确认',
+                                             btnClass: 'waves-effect waves-button waves-light'
+                                         }
+                                     }
+                                 });
+                   }
+               });
+    }
+
+    $(document).ready(function(){
+        zTreeObj = $.fn.zTree.init($("#ztree"), setting);
+    });
+    //]]>
+</script>
+</body>
+</html>

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -42,6 +43,18 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role, Role> imp
   public List<Role> selectUserRoles(User user) {
     // TODO  getUserRoles实现
     return null;
+  }
+
+  @Override
+  public int deleteByPrimaryKeys(String[] ids) throws SQLException {
+    for (String id :
+        ids) {
+      int i = roleMapper.deleteByPrimaryKey(Integer.parseInt(id));
+      if (i == 0) {
+        throw new SQLException("删除角色失败：id=" + id);
+      }
+    }
+    return 1;
   }
 
 }

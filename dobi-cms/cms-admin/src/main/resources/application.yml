@@ -20,5 +20,6 @@ spring:
     #开发过程中需将缓存关闭
     cache: false
     check-template: false
-
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
 

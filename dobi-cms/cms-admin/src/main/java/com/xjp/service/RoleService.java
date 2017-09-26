@@ -4,6 +4,7 @@ import com.xjp.common.service.BaseService;
 import com.xjp.model.Role;
 import com.xjp.model.User;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -19,5 +20,7 @@ public interface RoleService extends BaseService<Role, Role> {
    * @return List
    */
   public List<Role> selectUserRoles(User user);
+
+  public int deleteByPrimaryKeys(String[] ids) throws SQLException;
 
 }

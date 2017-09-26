@@ -123,6 +123,20 @@
       <version>1.7</version>
     </dependency>
 
+    <!-- 服务端数据校验 -->
+    <dependency>
+      <groupId>com.baidu.unbiz</groupId>
+      <artifactId>fluent-validator</artifactId>
+      <version>1.0.9</version>
+    </dependency>
+
+    <!-- fastJson -->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+      <version>1.2.38</version>
+    </dependency>
+
 
   </dependencies>
 
