@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
+
 /**
  * user service.
  *
@@ -26,7 +28,19 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User, User> imp
 
   private static Logger _log = LoggerFactory.getLogger(UserServiceImpl.class);
 
+  @SuppressWarnings("SpringJavaAutowiringInspection")
   @Autowired
   UserMapper userMapper;
 
+  @Override
+  public int deleteByPrimaryKeys(String[] ids) throws SQLException {
+    for (String id :
+        ids) {
+      int i = userMapper.deleteByPrimaryKey(Integer.parseInt(id));
+      if (i == 0) {
+        throw new SQLException("删除用户失败：id=" + id);
+      }
+    }
+    return 1;
+  }
 }

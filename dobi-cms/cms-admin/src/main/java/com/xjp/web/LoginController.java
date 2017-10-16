@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
 /**
  * login controller.
  *
@@ -28,6 +33,7 @@ public class LoginController {
   @Autowired
   private SecurityManager securityManager;
 
+  @ApiOperation(value = "登录页面", notes = "")
   @RequestMapping(value = "", method = RequestMethod.GET)
   public String login() {
     return "login";
@@ -40,6 +46,11 @@ public class LoginController {
    * @param password 密码
    * @return Map
    */
+  @ApiOperation(value = "登录", notes = "")
+  @ApiImplicitParams({
+      @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "String"),
+      @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "String")
+  })
   @RequestMapping(value = "/ajaxLogin", method = RequestMethod.POST)
   @ResponseBody
   public Map<String, Object> doLogin(String username, String password, boolean rememberMe, String

@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="zh-cn">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>用户列表</title>
+    <head th:include="/inc/common :: head"></head>
+</head>
+<body>
+<div id="main">
+    <div id="toolbar">
+        <a class="waves-effect waves-button" href="javascript:;" onclick="createAction()"><i
+                class="zmdi zmdi-plus"></i> 新增用户</a>
+        <a class="waves-effect waves-button" href="javascript:;" onclick="updateAction()"><i
+                class="zmdi zmdi-edit"></i> 编辑用户</a>
+        <a class="waves-effect waves-button" href="javascript:;" onclick="deleteAction()"><i
+                class="zmdi zmdi-close"></i> 删除用户</a>
+        <a class="waves-effect waves-button" href="javascript:;" onclick="permissionAction()"><i
+                class="zmdi zmdi-key"></i> 用户权限</a>
+    </div>
+    <table id="table"></table>
+</div>
+</body>
+<div th:include="/inc/common :: footer"></div>
+<script>
+    var $table = $('#table');
+    $(function () {
+        // bootstrap table初始化
+        $table.bootstrapTable
+        ({
+             url: '/manage/user/list',
+             height: getHeight(),
+             striped: true,
+             search: true,
+             showRefresh: true,
+             showColumns: true,
+             minimumCountColumns: 2,
+             clickToSelect: true,
+             detailView: true,
+             detailFormatter: 'detailFormatter',
+             pagination: true,
+             paginationLoop: false,
+             sidePagination: 'server',
+             silentSort: false,
+             smartDisplay: false,
+             escape: true,
+             searchOnEnterKey: true,
+             idField: 'userId',
+             maintainSelected: true,
+             toolbar: '#toolbar',
+             columns: [
+                 {field: 'ck', checkbox: true},
+                 {
+                     field: 'userId',
+                     title: '编号',
+                     sortable: true,
+                     align: 'center'
+                 },
+                 {field: 'username', title: '账号'},
+                 {field: 'password', title: '密码'},
+                 {field: 'salt', title: '盐'},
+                 {field: 'realname', title: '姓名'},
+                 {field: 'avatar', title: '头像'},
+                 {field: 'phone', title: '电话'},
+                 {field: 'email', title: '邮箱'},
+                 {field: 'sex', title: '性别'},
+                 {field: 'locked', title: '状态'},
+                 {field: 'ctime', title: '创建时间'},
+                 {
+                     field: 'action',
+                     title: '操作',
+                     align: 'center',
+                     formatter: 'actionFormatter',
+                     events: 'actionEvents',
+                     clickToSelect: false
+                 }
+             ]
+         });
+    });
+
+    // 新增
+    var createDialog;
+    function createAction() {
+        createDialog = $.dialog
+        ({
+             animationSpeed: 300,
+             title: '新增用户',
+             columnClass: 'xlarge',
+             content: 'url:/manage/user/add',
+             onContentReady: function () {
+                 initMaterialInput();
+                 $('select').select2();
+             }
+         });
+    }
+
+    // 编辑
+    var updateDialog;
+    function updateAction() {
+        var rows = $table.bootstrapTable('getSelections');
+        if (rows.length != 1) {
+            $.confirm({
+                          title: false,
+                          content: '请选择一条记录！',
+                          autoClose: 'cancel|3000',
+                          backgroundDismiss: true,
+                          buttons: {
+                              cancel: {
+                                  text: '取消',
+                                  btnClass: 'waves-effect waves-button'
+                              }
+                          }
+                      });
+        } else {
+            updateDialog = $.dialog({
+                                        animationSpeed: 300,
+                                        title: '编辑用户',
+                                        columnClass: 'xlarge',
+                                        content: 'url:/manage/user/update/'
+                                                 + rows[0].userId,
+                                        onContentReady: function () {
+                                            initMaterialInput();
+                                            $('select').select2();
+                                        }
+                                    });
+        }
+    }
+
+    // 删除
+    var deleteDialog;
+    function deleteAction() {
+        var rows = $table.bootstrapTable('getSelections');
+        if (rows.length == 0) {
+            $.confirm({
+                          title: false,
+                          content: '请至少选择一条记录！',
+                          autoClose: 'cancel|3000',
+                          backgroundDismiss: true,
+                          buttons: {
+                              cancel: {
+                                  text: '取消',
+                                  btnClass: 'waves-effect waves-button'
+                              }
+                          }
+                      });
+        } else {
+            deleteDialog = $.confirm
+            ({
+                 type: 'red',
+                 animationSpeed: 300,
+                 title: false,
+                 content: '确认删除该用户吗？',
+                 buttons: {
+                     confirm: {
+                         text: '确认',
+                         btnClass: 'waves-effect waves-button',
+                         action: function () {
+                             var ids = new Array();
+                             for (var i in rows) {
+                                 ids.push(rows[i].userId);
+                             }
+                             $.ajax({
+                                        type: 'get',
+                                        url: '/manage/user/delete/'
+                                             + ids.join("-"),
+                                        success: function (result) {
+                                            if (result.code != 1) {
+                                                if (result.data
+                                                    instanceof Array) {
+                                                    $.each(result.data,
+                                                           function (index,
+                                                                     value) {
+                                                               $.confirm({
+                                                                             theme: 'dark',
+                                                                             animation: 'rotateX',
+                                                                             closeAnimation: 'rotateX',
+                                                                             title: false,
+                                                                             content: value.errorMsg,
+                                                                             buttons: {
+                                                                                 confirm: {
+                                                                                     text: '确认',
+                                                                                     btnClass: 'waves-effect waves-button waves-light'
+                                                                                 }
+                                                                             }
+                                                                         });
+                                                           });
+                                                } else {
+                                                    $.confirm({
+                                                                  theme: 'dark',
+                                                                  animation: 'rotateX',
+                                                                  closeAnimation: 'rotateX',
+                                                                  title: false,
+                                                                  content: result.data.errorMsg,
+                                                                  buttons: {
+                                                                      confirm: {
+                                                                          text: '确认',
+                                                                          btnClass: 'waves-effect waves-button waves-light'
+                                                                      }
+                                                                  }
+                                                              });
+                                                }
+                                            } else {
+                                                deleteDialog.close();
+                                                $table.bootstrapTable(
+                                                    'refresh');
+                                            }
+                                        },
+                                        error: function (XMLHttpRequest,
+                                                         textStatus,
+                                                         errorThrown) {
+                                            $.confirm({
+                                                          theme: 'dark',
+                                                          animation: 'rotateX',
+                                                          closeAnimation: 'rotateX',
+                                                          title: false,
+                                                          content: textStatus,
+                                                          buttons: {
+                                                              confirm: {
+                                                                  text: '确认',
+                                                                  btnClass: 'waves-effect waves-button waves-light'
+                                                              }
+                                                          }
+                                                      });
+                                        }
+                                    });
+                         }
+                     },
+                     cancel: {
+                         text: '取消',
+                         btnClass: 'waves-effect waves-button'
+                     }
+                 }
+             });
+        }
+    }
+
+    // 用户权限
+    var permissionDialog;
+    var userId;
+    function permissionAction() {
+        var rows = $table.bootstrapTable('getSelections');
+        if (rows.length != 1) {
+            $.confirm({
+                          title: false,
+                          content: '请选择一条记录！',
+                          autoClose: 'cancel|3000',
+                          backgroundDismiss: true,
+                          buttons: {
+                              cancel: {
+                                  text: '取消',
+                                  btnClass: 'waves-effect waves-button'
+                              }
+                          }
+                      });
+        } else {
+            userId = rows[0].userId;
+            permissionDialog = $.dialog({
+                                            animationSpeed: 300,
+                                            title: '用户权限',
+                                            content: 'url:/manage/user/permission/'
+                                                     + userId,
+                                            onContentReady: function () {
+                                                initMaterialInput();
+                                            }
+                                        });
+        }
+    }
+</script>
+</html>

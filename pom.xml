@@ -26,6 +26,7 @@
 
     <modules>
         <module>dobi-cms</module>
+      <module>cms-book</module>
     </modules>
 
 </project>

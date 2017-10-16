@@ -1,0 +1,216 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="zh-cn">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>新增用户</title>
+    <head th:include="/inc/common :: head"></head>
+</head>
+<body>
+<div id="main">
+    <div id="createDialog" class="crudDialog">
+        <form id="createForm" method="post">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <label for="username">帐号</label>
+                            <input id="username" type="text" class="form-control" name="username"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <label for="password">密码</label>
+                            <input id="password" type="text" class="form-control" name="password"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <label for="salt">盐</label>
+                            <input id="salt" type="text" class="form-control" name="salt"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <label for="realname">姓名</label>
+                            <input id="realname" type="text" class="form-control" name="realname"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <label for="avatar">头像</label>
+                            <input id="avatar" type="text" class="form-control" name="avatar"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <label for="phone">电话</label>
+                            <input id="phone" type="text" class="form-control" name="phone"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <label for="email">邮箱</label>
+                            <input id="email" type="text" class="form-control" name="email"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <label for="sex">性别</label>
+                            <input id="sex" type="text" class="form-control" name="sex"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <label for="locked">状态</label>
+                            <input id="locked" type="text" class="form-control" name="locked"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <label for="ctime">创建时间</label>
+                            <input id="ctime" type="text" class="form-control" name="ctime"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group text-right dialog-buttons">
+                    <a id="create" class="waves-effect waves-button" href="javascript:;">保存</a>
+                    <a class="waves-effect waves-button" href="javascript:;"
+                       onclick="createDialog.close();">取消</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div th:include="/inc/common :: footer"></div>
+    <script>
+        $().ready(function () {
+            $('#createForm').bootstrapValidator({
+                                                    //
+                                                    excluded: [':disabled', ':hidden',
+                                                               ':not(:visible)'],
+                                                    //指定验证后验证字段的提示字体图标
+                                                    feedbackIcons: {
+                                                        valid: 'glyphicon glyphicon-ok',
+                                                        invalid: 'glyphicon glyphicon-remove',
+                                                        validating: 'glyphicon glyphicon-refresh'
+                                                    },
+                                                    //为每个字段指定通用错误提示语
+                                                    message: '该值不正确',
+                                                    //表单域配置
+                                                    fields: {
+                                                        name: {
+                                                            validators: {
+                                                                notEmpty: {
+                                                                    message: '字段不能为空'
+                                                                }
+                                                            }
+                                                        },
+                                                        description: {
+                                                            validators: {
+                                                                stringLength: {
+                                                                    max: 200,
+                                                                    message: '不能超过200个字符'
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                });
+            //提交
+            $('#create').click(function () {
+                var data = $("#createForm").data("bootstrapValidator");
+                data.validate();
+                var flag = data.isValid();
+                if (!flag) {
+                    return;
+                }
+                $.ajax({
+                           type: 'post',
+                           url: '/manage/user/add',
+                           data: $('#createForm').serialize(),
+                           beforeSend: function () {
+                               if ($('#title').val() == '') {
+                                   $('#title').focus();
+                                   return false;
+                               }
+                           },
+                           success: function (result) {
+                               if (result.code != 1) {
+                                   if (result.data instanceof Array) {
+                                       $.each(result.data, function (index, value) {
+                                           $.confirm({
+                                                         theme: 'dark',
+                                                         animation: 'rotateX',
+                                                         closeAnimation: 'rotateX',
+                                                         title: false,
+                                                         content: value.errorMsg,
+                                                         buttons: {
+                                                             confirm: {
+                                                                 text: '确认',
+                                                                 btnClass: 'waves-effect waves-button waves-light'
+                                                             }
+                                                         }
+                                                     });
+                                       });
+                                   } else {
+                                       $.confirm({
+                                                     theme: 'dark',
+                                                     animation: 'rotateX',
+                                                     closeAnimation: 'rotateX',
+                                                     title: false,
+                                                     content: result.data.errorMsg,
+                                                     buttons: {
+                                                         confirm: {
+                                                             text: '确认',
+                                                             btnClass: 'waves-effect waves-button waves-light'
+                                                         }
+                                                     }
+                                                 });
+                                   }
+                               } else {
+                                   createDialog.close();
+                                   $table.bootstrapTable('refresh');
+                               }
+                           },
+                           error: function (XMLHttpRequest, textStatus, errorThrown) {
+                               $.confirm({
+                                             theme: 'dark',
+                                             animation: 'rotateX',
+                                             closeAnimation: 'rotateX',
+                                             title: false,
+                                             content: textStatus,
+                                             buttons: {
+                                                 confirm: {
+                                                     text: '确认',
+                                                     btnClass: 'waves-effect waves-button waves-light'
+                                                 }
+                                             }
+                                         });
+                           }
+                       });
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

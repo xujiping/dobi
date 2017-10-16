@@ -2,6 +2,8 @@ package com.xjp.config;
 
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +42,18 @@ public class ShiroConfiguration {
     filterChainDefinitionMap.put("/js/**", "anon");
     filterChainDefinitionMap.put("/login/ajaxLogin", "anon");
     filterChainDefinitionMap.put("/plugins/**", "anon");
+    //增加以下配置，防止shiro阻拦swagger2的请求
+    filterChainDefinitionMap.put("/webjars/**", "anon");
+    filterChainDefinitionMap.put("/swagger-resources/**", "anon");
+    filterChainDefinitionMap.put("/v2/api-docs", "anon");
+    filterChainDefinitionMap.put("/swagger-ui.html**", "anon");
     //配置退出过滤器，具体代码Shiro已经是实现
     filterChainDefinitionMap.put("/logout", "logout");
     filterChainDefinitionMap.put("/add", "perms[权限添加]");
     // <!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
     // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
     filterChainDefinitionMap.put("/**", "authc");
-//    filterChainDefinitionMap.put("/**", "anon");
+    // filterChainDefinitionMap.put("/**", "anon");
     shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
     System.out.println("Shiro拦截器工厂类注入成功");
     return shiroFilterFactoryBean;
@@ -58,5 +65,19 @@ public class ShiroConfiguration {
     //设置realm
     securityManager.setRealm(permissionRealm);
     return securityManager;
+  }
+
+//  @Bean(name = "lifecycleBeanPostProcessor")
+//  public LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
+//    return new LifecycleBeanPostProcessor();
+//  }
+
+  @Bean
+  public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager
+                                                                                     securityManager) {
+    AuthorizationAttributeSourceAdvisor advisor = new
+        AuthorizationAttributeSourceAdvisor();
+    advisor.setSecurityManager(securityManager);
+    return advisor;
   }
 }

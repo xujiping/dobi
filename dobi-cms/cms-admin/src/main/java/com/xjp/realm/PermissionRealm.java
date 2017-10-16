@@ -73,8 +73,10 @@ public class PermissionRealm extends AuthorizingRealm {
     Set<String> roles = new HashSet<>();
     List<Role> roleList = roleService.selectUserRoles(user);
     logger.info(this.getClass().getName() + "--用户所有角色：" + roleList);
-    for (Role role : roleList) {
-      roles.add(role.getName());
+    if (roleList != null && roleList.size() > 0){
+      for (Role role : roleList) {
+        roles.add(role.getName());
+      }
     }
     info.setStringPermissions(roles);//添加角色集合
     return info;

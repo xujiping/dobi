@@ -42,7 +42,7 @@ public class WebLogAspect {
    */
   @Before("webLog()")
   public void doBefore(JoinPoint joinPoint) throws Throwable {
-    logger.info("==========================================");
+    logger.info("================================================================");
     startTime.set(System.currentTimeMillis()); // 记录开始时间
     // 接收到请求，记录请求内容
     ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder

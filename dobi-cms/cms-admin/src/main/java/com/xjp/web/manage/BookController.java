@@ -1,15 +1,15 @@
 package com.xjp.web.manage;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.xjp.common.constants.ResultConstants;
 import com.xjp.common.result.Result;
-import com.xjp.dao.PermissionMapper;
-import com.xjp.model.Permission;
-import com.xjp.service.PermissionService;
+import com.xjp.dao.BookMapper;
+import com.xjp.model.Book;
+import com.xjp.service.BookService;
 
 import org.apache.ibatis.session.RowBounds;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,24 +25,30 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * permission.
+ * book.
  *
  * @author xujiping 2017-09-20 15:49
  */
 @Controller
-@RequestMapping("/manage/permission")
-public class PermissionController {
+@RequestMapping("/manage/book")
+public class BookController {
+
+  private static Logger _log = LoggerFactory.getLogger(BookController.class);
 
   @SuppressWarnings("SpringJavaAutowiringInspection")
   @Autowired
-  private PermissionMapper permissionMapper;
-
+  private BookMapper bookMapper;
 
   @Autowired
-  private PermissionService permissionService;
+  private BookService bookService;
+
+  @RequestMapping(value = "index")
+  public String index() {
+    return "manage/book/index";
+  }
 
   /**
-   * 查询权限列表.
+   * 查询书籍列表.
    *
    * @param offset 第几页
    * @param limit  每页多少行
@@ -50,6 +56,7 @@ public class PermissionController {
    * @param order  排序列
    * @return Map
    */
+  @RequiresPermissions("cms:book:view")
   @RequestMapping(value = "list")
   @ResponseBody
   public Object list(
@@ -58,43 +65,50 @@ public class PermissionController {
       @RequestParam(required = false, value = "sort") String sort,
       @RequestParam(required = false, value = "order") String order) {
     // TODO 排序未实现
-    Permission permission = new Permission();
+    Book book = new Book();
     RowBounds rowBounds = new RowBounds(offset, limit);
-    List<Permission> rows = permissionMapper.selectByRowBounds(permission, rowBounds);
-    long total = permissionMapper.selectCount(permission);
+    List<Book> rows = bookMapper.selectByRowBounds(book, rowBounds);
+    long total = bookMapper.selectCount(book);
     Map<String, Object> result = new HashMap<>();
     result.put("rows", rows);
     result.put("total", total);
     return result;
   }
 
+  @RequiresPermissions("cms:book:create")
+  @RequestMapping(value = "add")
+  public String add() {
+    return "manage/book/add";
+  }
+
   /**
-   * 增加权限.
+   * 增加书籍.
    *
-   * @param permission permission
+   * @param book book
    * @return json
    */
+  @RequiresPermissions(value = "cms:book:create")
   @RequestMapping(value = "add", method = RequestMethod.POST)
   @ResponseBody
-  public Object doAdd(Permission permission) {
+  public Object doAdd(Book book) {
     long time = System.currentTimeMillis();
-    permission.setCtime(time);
-    int count = permissionMapper.insertSelective(permission);
+    int count = bookMapper.insertSelective(book);
     return new Result(ResultConstants.SUCCESS, count);
   }
 
   /**
-   * 删除权限.
+   * 删除书籍.
    *
    * @param ids 多个id以-分隔
    * @return json
    */
+  @RequiresPermissions("cms:book:delete")
   @RequestMapping(value = "/delete/{ids}", method = RequestMethod.GET)
   @ResponseBody
   public Object delete(@PathVariable("ids") String ids) {
     int count = 0;
     try {
-      count = permissionService.deleteByPrimaryKeys(ids.split("-"));
+      count = bookService.deleteByPrimaryKeys(ids.split("-"));
     } catch (SQLException e) {
       return new Result(ResultConstants.FAILED, count);
     }
@@ -104,51 +118,48 @@ public class PermissionController {
   /**
    * 修改页面.
    *
-   * @param id    permission_id
+   * @param id    book_id
    * @param model model
    * @return html
    */
+  @RequiresPermissions("cms:book:update")
   @RequestMapping(value = "update/{id}")
   public String update(@PathVariable("id") String id, Model model) {
-    Permission permission = permissionMapper.selectByPrimaryKey(Integer.parseInt(id));
-    model.addAttribute("permission", permission);
-    return "manage/permission/update";
+    Book book = bookMapper.selectByPrimaryKey(Integer.parseInt(id));
+    model.addAttribute("book", book);
+    return "manage/book/update";
   }
 
   /**
-   * 修改权限信息.
+   * 修改书籍信息.
    *
-   * @param permission permission
+   * @param book book
    * @return json
    */
+  @RequiresPermissions("cms:book:update")
   @RequestMapping(value = "update", method = RequestMethod.POST)
   @ResponseBody
-  public Object doUpdate(Permission permission) {
-    int count = permissionMapper.updateByPrimaryKeySelective(permission);
+  public Object doUpdate(Book book) {
+    int count = bookMapper.updateByPrimaryKeySelective(book);
     if (count != 1) {
       return new Result(ResultConstants.FAILED, count);
     }
     return new Result(ResultConstants.SUCCESS, count);
   }
 
-
   /**
-   * 角色权限.
-   * @param id role_id
+   * 权限页面.
+   *
+   * @param id    bookId
    * @param model model
-   * @return json
+   * @return html
    */
-  @RequestMapping(value = "role/{id}")
-  @ResponseBody
-  public Object rolePermission(@PathVariable("id") String id, Model model) {
-    // TODO 角色权限
-    List<Map<String, Object>> permissions = permissionMapper.selectByRoleId(Integer.parseInt(id));
-    JSONArray array = new JSONArray();
-    for (Map<String, Object> map :
-        permissions) {
-      JSONObject json = (JSONObject) JSON.toJSON(map);
-      array.add(json);
-    }
-    return array;
+  @RequiresPermissions("cms:permission:view")
+  @RequestMapping(value = "permission/{id}")
+  public String permission(@PathVariable("id") String id, Model model) {
+    Book book = bookMapper.selectByPrimaryKey(Integer.parseInt(id));
+    model.addAttribute("book", book);
+    return "manage/book/permission";
   }
+
 }

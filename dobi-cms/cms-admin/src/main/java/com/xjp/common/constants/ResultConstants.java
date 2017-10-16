@@ -12,7 +12,8 @@ public enum ResultConstants {
 
   FILE_TYPE_ERROR(20001, "File type not supported!"),
   INVALID_LENGTH(20002, "Invalid length"),
-  INVALID_PARAMETER(20003, "Invalid parameter");
+  INVALID_PARAMETER(20003, "Invalid parameter"),
+  no_permission(20004, "No permission");
 
   public int code;
 

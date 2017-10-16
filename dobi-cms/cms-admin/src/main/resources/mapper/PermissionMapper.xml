@@ -20,14 +20,13 @@
   </resultMap>
 
   <select id="selectByRoleId" parameterType="Integer" resultType="map">
-    SELECT
-      *
+    SELECT *
     FROM
       permission pe
       LEFT JOIN (
                   SELECT
                     p.permission_id,
-                    IFNULL('true','false') as checked
+                    IFNULL('true', 'false') AS checked
                   FROM
                     role r,
                     role_permission rp,

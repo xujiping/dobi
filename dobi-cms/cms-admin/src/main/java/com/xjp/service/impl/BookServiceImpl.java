@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
+
 import javax.annotation.Resource;
 
 /**
@@ -34,5 +36,17 @@ public class BookServiceImpl extends BaseServiceImpl<BookMapper, Book, BookExamp
   @Resource
   public void setBookMapper(BookMapper bookMapper) {
     this.bookMapper = bookMapper;
+  }
+
+  @Override
+  public int deleteByPrimaryKeys(String[] ids) throws SQLException {
+    for (String id :
+        ids) {
+      int i = bookMapper.deleteByPrimaryKey(Integer.parseInt(id));
+      if (i == 0) {
+        throw new SQLException("删除书籍失败：id=" + id);
+      }
+    }
+    return 1;
   }
 }
