@@ -27,6 +27,7 @@
   <modules>
     <module>dobi-cms</module>
     <module>eureka</module>
+    <module>configServer</module>
   </modules>
 
 </project>
