@@ -5,6 +5,7 @@ import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.filter.authc.AuthenticationFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -47,6 +48,7 @@ public class ShiroConfiguration {
     filterChainDefinitionMap.put("/swagger-resources/**", "anon");
     filterChainDefinitionMap.put("/v2/api-docs", "anon");
     filterChainDefinitionMap.put("/swagger-ui.html**", "anon");
+//    filterChainDefinitionMap.put("/cmsBook/**", "anon");
     //配置退出过滤器，具体代码Shiro已经是实现
     filterChainDefinitionMap.put("/logout", "logout");
     filterChainDefinitionMap.put("/add", "perms[权限添加]");

@@ -114,6 +114,7 @@ public class PermissionRealm extends AuthorizingRealm {
 
   @Override
   public boolean supports(AuthenticationToken token) {
+    //仅支持UsernamePasswordToken类型的token
     return token instanceof UsernamePasswordToken;
   }
 }

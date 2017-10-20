@@ -2,6 +2,8 @@ package com.xjp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -14,6 +16,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @author xujiping
  * @create 2017-08-30 17:12
  */
+@EnableZuulProxy
+@EnableEurekaClient
 @SpringBootApplication
 @EnableTransactionManagement  //开启事务
 @EnableAspectJAutoProxy

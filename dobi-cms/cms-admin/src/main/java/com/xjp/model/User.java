@@ -258,4 +258,21 @@ public class User {
     public void setCtime(Long ctime) {
         this.ctime = ctime;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+            "userId=" + userId +
+            ", username='" + username + '\'' +
+            ", password='" + password + '\'' +
+            ", salt='" + salt + '\'' +
+            ", realname='" + realname + '\'' +
+            ", avatar='" + avatar + '\'' +
+            ", phone='" + phone + '\'' +
+            ", email='" + email + '\'' +
+            ", sex=" + sex +
+            ", locked=" + locked +
+            ", ctime=" + ctime +
+            '}';
+    }
 }

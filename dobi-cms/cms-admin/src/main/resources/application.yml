@@ -1,9 +1,10 @@
 #服务器配置
 server:
   port: 8000
+
 spring:
   application:
-    name: ancient
+    name: cms-admin
   #数据库配置
   datasource:
     url: jdbc:mysql://localhost:3306/ancient?useSSL=false
@@ -22,4 +23,19 @@ spring:
     check-template: false
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+
+#注册到注册中心
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1000/eureka/
+
+#网关配置
+zuul:
+  routes:
+    cmsBook:
+      path: /ancient/**
+      serviceId: CMSBOOK
+
+
 
