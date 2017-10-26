@@ -1,5 +1,8 @@
+spring:
+  application:
+    name: eureka-server
 server:
-  port: 1000
+  port: 8761
 eureka:
   instance:
     hostname: localhost
@@ -7,4 +10,12 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
     service-url:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://localhost:8761/eureka/
+
+#高可用的eureka集群配置认证会出现登录不了的情况
+security:
+  basic:
+    enabled: true               # 开启基于HTTP basic的认证
+  user:
+    name: xjp                  # 配置登录的账号是user
+    password: xjp32.

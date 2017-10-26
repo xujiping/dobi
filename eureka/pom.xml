@@ -13,7 +13,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>eurekaserver</name>
+  <name>eureka-server</name>
   <description>服务注册中心:Eureka</description>
 
   <dependencyManagement>
@@ -41,6 +41,13 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!--提供认证-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+
   </dependencies>
 
   <build>
