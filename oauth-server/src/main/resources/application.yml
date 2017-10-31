@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: oauth-server
+server:
+  port: 8763
+security:
+  oauth2:
+    client:
+      client-id: acme
+      client-secret: acmesecret
+      scope: read,write
+      auto-approve-scopes: '.*'
+
+logging:
+  level:
+    org.springframework.security: DEBUG
