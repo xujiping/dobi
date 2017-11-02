@@ -6,12 +6,12 @@
 ## commonservice:通用服务
     
 1. eureka：服务发现中心
-    1. 端口：peer1（8761）
+    1. 端口：8761
     2. 配置系统hosts，windows系统hosts文件路径是C:\Windows\System32\drivers\etc\hosts；Linux及Mac OS等系统的文件路径是/etc/hosts。
 	127.0.0.1 peer1 peer2
     3. 启动：
 	java -jar eureka-0.0.1-SNAPSHOT.jar
-	4. 登录：xjp xjp32.
+	4. 登录：admin 123456
 
 2. oauth-server：认证服务器
 
