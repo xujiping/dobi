@@ -50,3 +50,5 @@ commonservice/configServer/src/main/webapp/
 commonservice/configServer/src/test/
 commonservice/eureka/src/test/
 commonservice/gateway-server/src/test/
+!/dobi.iml
+!/.gitignore
