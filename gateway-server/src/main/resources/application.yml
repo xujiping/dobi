@@ -1,9 +1,0 @@
-server:
-  port: 8762
-spring:
-  application:
-    name: gateway-server
-eureka:
-  client:
-    service-url:
-      defaultZone: http://xjp:xjp32.@192.168.43.132:8761/eureka/

@@ -25,7 +25,20 @@ hs_err_pid*
 
 .gitignore
 .idea/
+*.iml
 dobi-cms/cms-admin/cms-admin.iml
 dobi-cms/dobi-cms.iml
 dobi.iml
-/.project
+dobi-cms/cms-admin/target/
+dobi-cms/cms-book/target/
+/dobi-frontend/dobi-frontend.iml
+/commonservice/commonservice.iml
+/commonservice/eureka/eureka.iml
+/commonservice/configServer/target/
+/commonservice/eureka/target/
+/commonservice/gateway-server/target/
+/demo/authc-client/target/
+/demo/authc-server/target/
+/demo/config-client/target/
+/demo/oauth-client/target/
+/demo/oauth-server/target/

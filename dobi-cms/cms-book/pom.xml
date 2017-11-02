@@ -17,13 +17,10 @@
 
   <dependencies>
 
+    <!--注册-->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-eureka</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-feign</artifactId>
     </dependency>
 
     <!--web-->
@@ -31,6 +28,18 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
+
+    <!--配置客户端-->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-config</artifactId>
+    </dependency>
+
+    <!--&lt;!&ndash;监控&ndash;&gt;-->
+    <!--<dependency>-->
+      <!--<groupId>org.springframework.boot</groupId>-->
+      <!--<artifactId>spring-boot-starter-actuator</artifactId>-->
+    <!--</dependency>-->
 
     <!--&lt;!&ndash;mybatis&ndash;&gt;-->
     <!--<dependency>-->
@@ -58,11 +67,11 @@
     <!--</dependency>-->
 
 
-    <!--&lt;!&ndash;前端模板框架&ndash;&gt;-->
-    <!--<dependency>-->
-      <!--<groupId>org.springframework.boot</groupId>-->
-      <!--<artifactId>spring-boot-starter-thymeleaf</artifactId>-->
-    <!--</dependency>-->
+    <!--前端模板框架-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
 
     <!--&lt;!&ndash;支持使用 JDBC 访问数据库 &ndash;&gt;-->
     <!--<dependency>-->

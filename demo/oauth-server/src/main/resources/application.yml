@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: oauth-server
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/oauth-server?characterEncoding=UTF-8
+    username: root
+    driver-class-name: com.mysql.jdbc.Driver
+    password: xjpdyx32.
+server:
+  port: 8763
+  context-path: /uaa
+security:
+  oauth2:
+    client:
+      client-id: acme
+      client-secret: acmesecret
+      scope: read,write
+      auto-approve-scopes: '.*'
+
+logging:
+  level:
+    org.springframework.security: DEBUG

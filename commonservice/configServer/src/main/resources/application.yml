@@ -1,0 +1,23 @@
+server:
+  port: 8763
+  
+#spring.profiles.active=native提供本地存储配置
+#也可以通过spring.cloud.config.server.native.searchLocations=file:F:/properties/属性来指定配置文件的位置
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://git.coding.net/xjp-dream/configure-center.git
+#          search-paths:
+#          - cloud-config-repo
+          username: xjpdyx@hotmail.com
+          password: xjpdyx32.
+eureka:
+  client:
+    service-url:
+      defaultZone: http://xjp:xjp32.@localhost:8761/eureka/
+          

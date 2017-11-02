@@ -26,9 +26,9 @@
 
   <modules>
     <module>dobi-cms</module>
-    <module>eureka</module>
-    <module>configServer</module>
-    <module>authc-server</module>
+    <module>dobi-frontend</module>
+    <module>commonservice</module>
+    <module>demo</module>
   </modules>
 
 </project>
