@@ -16,6 +16,7 @@
   <name>eureka-server</name>
   <description>服务注册中心:Eureka</description>
 
+
   <dependencyManagement>
     <dependencies>
       <dependency>
