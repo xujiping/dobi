@@ -15,6 +15,10 @@
 
 2. oauth-server：认证服务器
 
+3. configServer：配置中心
+
+4. gateway-server：网关服务
+
 ## component:通用组件
 
 ## demo:学习demo

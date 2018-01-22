@@ -18,13 +18,13 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class GatewayServerApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(GatewayServerApplication.class);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayServerApplication.class);
+    }
 
-  @Bean
-  public PreRequestLogFilter preRequestLogFilter(){
-    return new PreRequestLogFilter();
-  }
+    @Bean
+    public PreRequestLogFilter preRequestLogFilter() {
+        return new PreRequestLogFilter();
+    }
 
 }

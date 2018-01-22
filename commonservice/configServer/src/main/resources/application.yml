@@ -7,6 +7,15 @@ server:
 spring:
   application:
     name: config-server
+  thymeleaf:
+    #修改跳转的前缀和后缀,以下注释部分是spring boot的默认配置
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    #开发过程中需将缓存关闭
+    cache: false
+    check-template: false
   cloud:
     config:
       server:
@@ -16,8 +25,17 @@ spring:
 #          - cloud-config-repo
           username: xjpdyx@hotmail.com
           password: xjpdyx32.
+  rabbitmq:
+    host: localhost
+    prot: 5672
+    username: guest
+    password: guest
 eureka:
   client:
     service-url:
-      defaultZone: http://xjp:xjp32.@localhost:8761/eureka/
+      defaultZone: http://admin:123456@localhost:8761/eureka/
+#不开启安全验证，否则访问/bus/refresh返回401
+management:
+  security:
+    enabled: false
           

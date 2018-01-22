@@ -16,8 +16,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @author xujiping
  * @create 2017-08-30 17:12
  */
-@EnableZuulProxy
-@EnableEurekaClient
+//@EnableZuulProxy
+//@EnableEurekaClient
 @SpringBootApplication
 @EnableTransactionManagement  //开启事务
 @EnableAspectJAutoProxy

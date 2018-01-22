@@ -2,8 +2,8 @@ package com.xjp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.config.server.EnableConfigServer;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * 配置中心.
@@ -11,7 +11,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  * @author xujiping 2017-10-16 16:10
  */
 @EnableConfigServer
-@EnableEurekaClient
+@EnableDiscoveryClient
 @SpringBootApplication
 public class ConfigServerApplication {
 

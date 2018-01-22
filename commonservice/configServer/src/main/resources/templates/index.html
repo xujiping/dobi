@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="zh-cn">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>配置中心</title>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+</head>
+<body>
+<div>
+    <p>
+        访问配置信息的URL与配置文件的映射关系如下(<a href="https://git.coding.net/xjp-dream/configure-center.git">github</a>)：
+    </p>
+    <ul>
+        <li>
+            /{application}/{profile}[/{label}]
+        </li>
+        <li>
+            /{application}-{profile}.yml
+        </li>
+        <li>
+            /{label}/{application}-{profile}.yml
+        </li>
+        <li>
+            /{application}-{profile}.properties
+        </li>
+        <li>
+            /{label}/{application}-{profile}.properties
+        </li>
+    </ul>
+</div>
+<hr/>
+<button onclick="refreshConfig()">更新配置</button>
+<i>使用spring cloud config，引用本地css和js文件会出问题，原因不明</i>
+</body>
+<script>
+    function refreshConfig() {
+        $.post("/bus/refresh", function (data) {
+            if (data == "") {
+                alert("更新配置成功");
+            }
+        });
+    }
+</script>
+</html>

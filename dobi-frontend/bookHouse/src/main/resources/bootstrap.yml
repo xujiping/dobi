@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: bookhouse
+  cloud:
+    config:
+      profile: dev
+      label: master
+      discovery:
+        #使用注册中心的Config Server
+        enabled: true
+        service-id: config-server
+  rabbitmq:
+    host: localhost
+    prot: 5672
+    username: guest
+    password: guest
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin:123456@localhost:8761/eureka/
+#开启断路器
+feign:
+  hystrix:
+    enabled: true
+#不开启安全验证
+management:
+  security:
+    enabled: false

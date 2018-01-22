@@ -6,7 +6,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://xjp:xjp32.@localhost:8761/eureka/
+      defaultZone: http://admin:123456@localhost:8761/eureka/
 zuul:
   routes:
     cmsBook: /cmsBook/**

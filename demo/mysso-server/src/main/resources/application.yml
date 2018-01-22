@@ -1,0 +1,26 @@
+# 服务器配置
+server:
+  port: 9001
+
+spring:
+  application:
+    name: mysso-server
+  thymeleaf:
+    # 修改跳转的前缀和后缀,以下注释部分是spring boot的默认配置
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    # 开发过程中需将缓存关闭
+    cache: false
+    check-template: false
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    pool:
+      max-idle: 8
+      max-wait: -1
+      max-active: 8
+      min-idle: 0
+    timeout: 0
